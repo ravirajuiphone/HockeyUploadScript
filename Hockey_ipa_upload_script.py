@@ -6,7 +6,7 @@ ipa_build_path = "/Users/rvysyaraju/Documents/Dummy/GridWrapper.ipa" # build pat
 hockeyAppId =  "" # Each app has individual hockey app id to identify app in Hockey website
 
 
-UPLOAD_URL = "https://rink.hockeyapp.net/api/2/apps/{}/app_versions/upload"
+hockeyapp_upload_link = "https://rink.hockeyapp.net/api/2/apps/{}/app_versions/upload"
 
 #
 # 0 to not notify testers
@@ -34,14 +34,14 @@ def upload_build(build_file, hockeyAppId="", notify = "0", release_notes=None):
     params['download'] = True
     params['notify'] = notify
     files = {'ipa': open(build_file, 'rb')}
-    headers = {'X-HockeyAppToken' : HOCKEYAPP_TOKEN}
+    headers = {'X-HockeyAppToken' : hockeyapp_token}
     try:
-        req = requests.post(url=UPLOAD_URL.format(hockeyAppId), data=params, files=files, headers=headers)
+        req = requests.post(url=hockeyapp_upload_link.format(hockeyAppId), data=params, files=files, headers=headers)
         return (req.json(), req.status_code)
     except ConnectionError:
         raise AutoHockeyConnectionError('Connection error. Please try again.')
 def main():
-	upload_build(ipa_build_file, hockeyAppId, notify, release_notes)
+	upload_build(ipa_build_path, hockeyAppId, notify, release_notes)
 
 if __name__ == "__main__":
     main()
